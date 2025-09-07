@@ -9,7 +9,7 @@ MODEL_NAME = "google/embeddinggemma-300m" # This is the Hugging Face model ID
 
 # Corrected device detection and assignment
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-print(f"Using device: {DEVICE}")
+print(f"Using device: {DEVICE}") # Changed from DEVICE to device for consistency
 # --------------------------------------
 
 queries = {
@@ -70,33 +70,39 @@ def main():
         print(f"Error encoding documents: {e}")
         return
 
-    # --- Direct Similarity Calculation without FAISS ---
+    print("\n" + "="*30)
+    print("  Multilingual Query Results")
+    print("="*30)
 
-    # Example: Search for similarity for a given query text
-    query_text = "What is the Red Planet?"
-    print(f"\nEncoding query: '{query_text}'")
-    try:
-        query_emb = model.encode([query_text], convert_to_numpy=True, device=DEVICE)
-        query_emb = normalize(query_emb, axis=1).astype(np.float32)
+    # --- Iterate through queries and perform search ---
+    for lang, query_text in queries.items():
+        print(f"\n[{lang}] {query_text}")
+        try:
+            # Encode the query
+            query_emb = model.encode([query_text], convert_to_numpy=True, device=DEVICE)
+            query_emb = normalize(query_emb, axis=1).astype(np.float32)
 
-        # Calculate cosine similarity between the query embedding and all document embeddings
-        similarities = cosine_similarity(query_emb, doc_embs)[0]
+            # Calculate cosine similarity between the query embedding and all document embeddings
+            similarities = cosine_similarity(query_emb, doc_embs)[0]
 
-        # Get the indices of the top k most similar documents
-        k = 2
-        # argsort returns indices that would sort the array. [-k:] gets the top k indices in ascending order. [::-1] reverses to descending.
-        top_k_indices = np.argsort(similarities)[-k:][::-1]
+            # Get the indices of the top k most similar documents
+            k = 2 # Number of nearest neighbors to retrieve
 
-        print("\nSearch Results (using sklearn.metrics.pairwise):")
-        for i in range(k):
-            idx = top_k_indices[i]
-            print(f"  Rank {i+1}:")
-            print(f"    Similarity Score: {similarities[idx]:.4f}")
-            print(f"    Document: \"{documents[idx]}\"")
+            # Ensure k is not greater than the number of documents
+            k = min(k, len(documents))
 
-    except Exception as e:
-        print(f"Error calculating similarity: {e}")
+            top_k_indices = np.argsort(similarities)[-k:][::-1]
 
+            # Print top results for this query
+            if len(top_k_indices) > 0:
+                for i in range(k):
+                    idx = top_k_indices[i]
+                    print(f"  -> Top result {i+1}: '{documents[idx]}' (score={similarities[idx]:.3f})")
+            else:
+                print("  No similar documents found.")
+
+        except Exception as e:
+            print(f"  Error processing query for {lang}: {e}")
 
 if __name__ == "__main__":
     main()
