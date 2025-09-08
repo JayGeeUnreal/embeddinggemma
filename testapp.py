@@ -9,7 +9,7 @@ MODEL_NAME = "google/embeddinggemma-300m" # This is the Hugging Face model ID
 
 # Corrected device detection and assignment
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-print(f"Using device: {DEVICE}") # Changed from DEVICE to device for consistency
+print(f"Using device: {DEVICE}")
 # --------------------------------------
 
 queries = {
