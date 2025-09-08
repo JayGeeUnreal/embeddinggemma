@@ -34,7 +34,7 @@ queries = {
     "Marathi": "कोणता ग्रह लाल ग्रह म्हणून ओळखला जातो?",
     "Telugu": "ఏ గ్రహాన్ని అరుణ గ్రహం అంటారు?",
     "Turkish": "Hangi gezegen Kızıl Gezegen olarak bilinir?",
-    "Tamil": "எந்த கிரகம", # Note: This Tamil entry seems incomplete. You might want to fix it.
+    "Tamil": "எந்த கிரகம் சிவப்புக்கோள் என அழைக்கப்படுகிறது?", # Note: This Tamil entry seems incomplete. You might want to fix it.
     "Italian": "Quale pianeta è conosciuto como il Pianeta Rosso?",
     "Korean": "어느 행성이 붉은 행성으로 알려져 있습니까?",
     "Vietnamese": "Hành tinh nào được gọi là Hành tinh Đỏ?",
