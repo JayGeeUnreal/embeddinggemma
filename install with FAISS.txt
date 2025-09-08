@@ -1,0 +1,8 @@
+For this to work with FAISS you need to use Conda. I havnt found a way to install FAISS in venv without compiling it manually...
+________________________________________________________________________________________________________________________________
+conda install conda-forge::faiss-gpu
+pip install sentence-transformers
+pip install pandas
+pip install scikit-learn
+pip install tqdm
+pip install numpypip install torch==2.7.0 torchvision==0.22.0 torchaudio==2.7.0 --index-url https://download.pytorch.org/whl/cu128
